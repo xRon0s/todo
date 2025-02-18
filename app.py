@@ -1,5 +1,5 @@
 # todo_app.py
-from PySide2.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget, QLineEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QListWidget, QLineEdit
 from tasks import TaskManager
 
 
