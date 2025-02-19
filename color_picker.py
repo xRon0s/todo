@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QMouseEvent, QImage, QPixmap
-from main import MainWindow
 
 
 class ColorPicker(QLabel):
@@ -32,6 +31,8 @@ class ColorPicker(QLabel):
             y = event.pos().y()
             if 0 <= x < self.image.width() and 0 <= y < self.image.height():
                 pixel_color = self.image.pixelColor(x, y)
+
+                from main import MainWindow
 
                 # `parent`をMainWindowのインスタンスに正しくアクセス
                 parent = self.parent()
