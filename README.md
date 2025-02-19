@@ -1,17 +1,21 @@
 # Color Checker
 
-カラーチェッカーは**Pyside6**を用いたGUIアプリケーションで、画像からのHEX,RGB値の取得機能とHEX値を用いた4つの色の比較機能という2つの機能を持っています。
+カラーチェッカーは**Pyside6**を用いたGUIアプリケーションで、**画像からのHEX,RGB値の取得機能**と**HEX値を用いた4つの色の比較機能**という2つの機能を持っています。この機能によりWEBデザインやロゴデザインに貢献することができます。
+![全体](readme/スクリーンショット%202025-02-19%20181000.png)
 
 ## Features
 
-- **Image Upload**: Load an image from your system to interact with.
-- **Color Picker**: Click on the image to pick a color and get its RGB and HEX values.
-- **Color Comparison**: Compare the selected color with other color codes entered manually.
-- **User-friendly Interface**: Built with PySide6 for a modern, easy-to-use interface.
+- **カラーピックの機能**: 
+  Load Imageより読み込んだ画像上（Jpg,Jpeg対応、png非対応）にマウスカーソルを当てることで画像上の色に対応したRGB値、HEX値を取得することができます。
+ ![カラーピック](readme/スクリーンショット%202025-02-19%20184055.png)
+  
+- **色比較の機能**: 
+  下部の4つの入力ボックスにHEX値（「#OOOOOO」　形式）を入力することで色を表示し、最大4種類の色を表示、比較することができます。
+  ![色比較](readme/スクリーンショット%202025-02-19%20184200.png)
 
 ## Requirements
 
-This project uses the following Python packages:
+以下のPythonパッケージを含んでいます:
 
 - PySide6==6.8.1.1
 - numpy==2.2.0
@@ -25,31 +29,27 @@ This project uses the following Python packages:
 
 ## Installation
 
-1. **Clone the repository**:
+1. **リポジトリのクローン**:
 
     ```bash
-    git clone https://github.com/yourusername/color-checker.git
-    cd color-checker
+    git clone https://github.com/xRon0s/todo.git
+    cd todo
     ```
 
-2. **Set up a virtual environment**:
+2. **仮想環境の構築**:
 
     ```bash
     python -m venv venv
     ```
 
-3. **Activate the virtual environment**:
+3. **仮想環境のアクティブ化**:
 
-    - For Windows:
+  
       ```bash
       venv\Scripts\activate
       ```
-    - For macOS/Linux:
-      ```bash
-      source venv/bin/activate
-      ```
 
-4. **Install the required packages**:
+4. **requirements.txtに記されたパッケージのインストール**:
 
     ```bash
     pip install -r requirements.txt
@@ -57,19 +57,18 @@ This project uses the following Python packages:
 
 ## Usage
 
-1. **Run the application**:
+1. **立ち上げ方**:
 
     ```bash
     python main.py
     ```
 
-2. **Load an Image**:
-   - Click on the "Load Image" button to select an image from your computer.
+2. **画像の読み込み方法**:
+   - ウィンドウ上部に表示されているLoad Imageボタンを押して、PC内の画像を選択することで画像を読み込み、表示することができます（pngも読み込めますが透過部分で上手く作動しないことがあります）
 
-3. **Pick a Color**:
-   - Click on any area of the image to select a color.
-   - The RGB and HEX values of the selected color will be displayed.
+3. **カラーピック方法**:
+   - 読み込んだ画像上にマウスを持って行くとマウスの状態が（Pointer）になります。Pointer状態で画像のRGB値、HEX値を自動で取得し、表示してくれます。
 
-4. **Compare Colors**:
-   - Enter up to 4 HEX color codes in the provided fields.
-   - Click "Compare Colors" to see which entered color matches the selected color.
+4. **色比較の方法**:
+   - 1~4個のHEX値（#を含めて7文字）を入力欄に入力します
+   - 入力することで自動でHEX値に対応した色が表示されます（ 色が表示されない場合は下のCompareボタンを押すことで改善されます）
