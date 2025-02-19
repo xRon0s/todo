@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QLabel
 from PySide6.QtCore import Qt, QPoint
 from PySide6.QtGui import QMouseEvent, QImage, QPixmap
 
+
 class ColorPicker(QLabel):
     def __init__(self, parent=None, color_label=None, rgb_label=None, hex_label=None):
         super().__init__(parent)
@@ -19,7 +20,8 @@ class ColorPicker(QLabel):
     def setImage(self, image: QImage):
         self.image = image
         pixmap = QPixmap.fromImage(self.image)
-        scaled_pixmap = pixmap.scaled(400, 400, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        scaled_pixmap = pixmap.scaled(
+            400, 400, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.setPixmap(scaled_pixmap)
         self.setFixedSize(scaled_pixmap.size())
 
@@ -31,12 +33,14 @@ class ColorPicker(QLabel):
                 scaled_x = x * self.image.width() / self.width()
                 scaled_y = y * self.image.height() / self.height()
 
-                pixel_color = self.image.pixelColor(int(scaled_x), int(scaled_y))
+                pixel_color = self.image.pixelColor(
+                    int(scaled_x), int(scaled_y))
 
                 # カラーメッセージを直接表示
                 hex_color = f"#{pixel_color.red():02x}{pixel_color.green():02x}{pixel_color.blue():02x}"
                 self.color_label.setText(f"Selected Color: {hex_color}")
-                self.rgb_label.setText(f"RGB: ({pixel_color.red()}, {pixel_color.green()}, {pixel_color.blue()})")
+                self.rgb_label.setText(
+                    f"RGB: ({pixel_color.red()}, {pixel_color.green()}, {pixel_color.blue()})")
                 self.hex_label.setText(f"HEX: {hex_color}")
                 self.setCursor(Qt.CrossCursor)
 
@@ -48,12 +52,14 @@ class ColorPicker(QLabel):
                 scaled_x = x * self.image.width() / self.width()
                 scaled_y = y * self.image.height() / self.height()
 
-                pixel_color = self.image.pixelColor(int(scaled_x), int(scaled_y))
+                pixel_color = self.image.pixelColor(
+                    int(scaled_x), int(scaled_y))
 
                 # カラーメッセージを直接表示
                 hex_color = f"#{pixel_color.red():02x}{pixel_color.green():02x}{pixel_color.blue():02x}"
                 self.color_label.setText(f"Selected Color: {hex_color}")
-                self.rgb_label.setText(f"RGB: ({pixel_color.red()}, {pixel_color.green()}, {pixel_color.blue()})")
+                self.rgb_label.setText(
+                    f"RGB: ({pixel_color.red()}, {pixel_color.green()}, {pixel_color.blue()})")
                 self.hex_label.setText(f"HEX: {hex_color}")
                 self.setCursor(Qt.CrossCursor)
             else:

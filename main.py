@@ -1,9 +1,8 @@
 # main.py
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, QFileDialog, QHBoxLayout, QSpacerItem, QSizePolicy
-from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtCore import Qt
-from color_picker import ColorPicker  # MainWindowをインポートする前にColorPickerをインポート
+from PySide6.QtGui import QImage
+from color_picker import ColorPicker
 
 
 class MainWindow(QMainWindow):
@@ -22,16 +21,6 @@ class MainWindow(QMainWindow):
         self.load_button = QPushButton("Load Image")
         self.load_button.clicked.connect(self.load_image)
         self.layout.addWidget(self.load_button)
-
-        # 画像を表示するラベルのためのレイアウト
-        self.image_layout = QHBoxLayout()
-        self.layout.addLayout(self.image_layout)
-
-        # ColorPickerをMainWindowに追加
-        self.color_picker = ColorPicker(self)  # ここで親としてMainWindowを渡す
-        self.image_layout.addWidget(self.color_picker)
-        self.image_layout.addItem(QSpacerItem(
-            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
 
         # その他の情報を表示するラベル
         self.color_label = QLabel("Selected Color: ")
@@ -59,6 +48,15 @@ class MainWindow(QMainWindow):
 
         self.result_label = QLabel("")
         self.layout.addWidget(self.result_label)
+
+        # ColorPickerをMainWindowに追加
+        self.color_picker = ColorPicker(
+            self, self.color_label, self.rgb_label, self.hex_label)
+        self.image_layout = QHBoxLayout()
+        self.image_layout.addWidget(self.color_picker)
+        self.image_layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        self.layout.addLayout(self.image_layout)
 
     def load_image(self):
         options = QFileDialog.Options()
