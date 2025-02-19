@@ -50,8 +50,17 @@ class TodoApp(QWidget):
         self.layout.addWidget(self.tree_widget)
         self.setLayout(self.layout)
 
-        self.layout.setStretch(0, 0)
+        self.layout.setStretch(0, 0)  # フォルダ入力欄のストレッチ設定
+        self.layout.setStretch(1, 0)  # フォルダ追加ボタンのストレッチ設定
+        self.layout.setStretch(2, 0)  # フォルダ削除ボタンのストレッチ設定
+        self.layout.setStretch(3, 0)  # タスク入力欄のストレッチ設定
+        self.layout.setStretch(4, 0)  # タスク追加ボタンのストレッチ設定
+        self.layout.setStretch(5, 0)  # タスク削除ボタンのストレッチ設定
+        self.layout.setStretch(6, 1)  # ツリービューのストレッチを最も大きく設定
+
         self.setLayout(self.layout)
+
+        self.update_tree_widget
 
     def add_folder(self):
         folder_name = self.folder_input.text()
@@ -135,7 +144,7 @@ class TodoApp(QWidget):
           task_index = item.parent().indexOfChild(item)
           new_task_name, ok = QInputDialog.getText(
               self, "タスク内容の編集", "新しいタスク内容", text=item.text(1))
-          if ok:
+          if ok and new_task_name:
               self.task_manager.folders[folder_index].tasks[task_index].name = new_task_name
               item.setText(1, new_task_name)
 
