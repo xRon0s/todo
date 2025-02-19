@@ -20,6 +20,10 @@ class TodoApp(QWidget):
         self.add_folder_button.clicked.connect(self.add_folder)
         self.layout.addWidget(self.add_folder_button)
 
+        self.delete_folder_button = QPushButton("選択したフォルダを削除", self)
+        self.delete_folder_button.clicked.connect(self.delete_folder)
+        self.layout.addWidget(self.delete_folder_button)
+
         self.task_input = QLineEdit(self)
         self.task_input.setPlaceholderText("新しいタスク名を入力...")
         self.layout.addWidget(self.task_input)
@@ -32,18 +36,19 @@ class TodoApp(QWidget):
         self.delete_button.clicked.connect(self.delete_task)
         self.layout.addWidget(self.delete_button)
 
-        self.delete_folder_button = QPushButton("選択したフォルダを削除", self)
-        self.delete_folder_button.clicked.connect(self.delete_folder)
-        self.layout.addWidget(self.delete_folder_button)
 
         self.tree_widget = QTreeWidget(self)
-        self.tree_widget.setHeaderLabels(["フォルダ", "タスク"])
+        self.tree_widget.setHeaderLabels(["フォルダ", "内容"])
         self.tree_widget.setDragEnabled(True)
         self.tree_widget.setDropIndicatorShown(True)
         self.tree_widget.setAcceptDrops(True)
         self.tree_widget.itemChanged.connect(self.folder_changed)
         self.tree_widget.itemDoubleClicked.connect(self.edit_folder_name)
         self.layout.addWidget(self.tree_widget)
+
+        self.tree_widget.itemDoubleClicked.connect(self.edit_task_content)
+        self.layout.addWidget(self.tree_widget)
+        self.setLayout(self.layout)
 
         self.layout.setStretch(0, 0)
         self.setLayout(self.layout)
@@ -123,6 +128,16 @@ class TodoApp(QWidget):
             if ok:
                 self.task_manager.folders[folder_index].name = new_folder_name
                 item.setText(0, new_folder_name)
+
+    def edit_task_content(self, item):
+      if item.parent() is not None:
+          folder_index = self.tree_widget.indexOfTopLevelItem(item.parent())
+          task_index = item.parent().indexOfChild(item)
+          new_task_name, ok = QInputDialog.getText(
+              self, "タスク内容の編集", "新しいタスク内容", text=item.text(1))
+          if ok:
+              self.task_manager.folders[folder_index].tasks[task_index].name = new_task_name
+              item.setText(1, new_task_name)
 
     def dragEnterEvent(self, event):
         if event.mimeData().hasText():
