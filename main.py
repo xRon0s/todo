@@ -32,6 +32,15 @@ class MainWindow(QMainWindow):
         self.hex_label = QLabel("HEX: ")
         self.layout.addWidget(self.hex_label)
 
+        # 画像を表示する領域（ColorPicker）をボタンの1つ下に配置
+        self.image_layout = QHBoxLayout()
+        self.color_picker = ColorPicker(
+            self, self.color_label, self.rgb_label, self.hex_label)
+        self.image_layout.addWidget(self.color_picker)
+        self.image_layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        self.layout.addLayout(self.image_layout)
+
         self.compare_label = QLabel("Compare Colors:")
         self.layout.addWidget(self.compare_label)
 
@@ -48,15 +57,6 @@ class MainWindow(QMainWindow):
 
         self.result_label = QLabel("")
         self.layout.addWidget(self.result_label)
-
-        # ColorPickerをMainWindowに追加
-        self.color_picker = ColorPicker(
-            self, self.color_label, self.rgb_label, self.hex_label)
-        self.image_layout = QHBoxLayout()
-        self.image_layout.addWidget(self.color_picker)
-        self.image_layout.addItem(QSpacerItem(
-            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
-        self.layout.addLayout(self.image_layout)
 
     def load_image(self):
         options = QFileDialog.Options()
