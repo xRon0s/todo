@@ -1,7 +1,6 @@
-# main.py
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, QFileDialog, QHBoxLayout, QSpacerItem, QSizePolicy
-from PySide6.QtGui import QImage
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, QFileDialog, QHBoxLayout, QSpacerItem, QSizePolicy, QFrame
+from PySide6.QtGui import QImage, QColor
 from color_picker import ColorPicker
 
 
@@ -41,19 +40,34 @@ class MainWindow(QMainWindow):
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.layout.addLayout(self.image_layout)
 
-        self.compare_label = QLabel("Compare Colors:")
-        self.layout.addWidget(self.compare_label)
-
-        self.color_inputs = []
-        for i in range(4):
-            color_input = QLineEdit()
-            color_input.setPlaceholderText("Enter color code (HEX)")
-            self.layout.addWidget(color_input)
-            self.color_inputs.append(color_input)
-
+        # 比較ボタンを配置
         self.compare_button = QPushButton("Compare Colors")
         self.compare_button.clicked.connect(self.compare_colors)
         self.layout.addWidget(self.compare_button)
+
+        # 色入力欄と色表示領域を比較ボタンの下にまとめて配置
+        self.input_color_label = QLabel("Entered Colors:")
+        self.layout.addWidget(self.input_color_label)
+
+        # 色入力欄（4つ）
+        self.color_inputs = []
+        self.color_displays = []
+        color_layout = QHBoxLayout()  # 横並びに配置するためのレイアウト
+        for i in range(4):
+            color_input = QLineEdit()
+            color_input.setPlaceholderText("Enter color code (HEX)")
+            color_input.textChanged.connect(self.update_color_display)  # 変更を検知
+            color_layout.addWidget(color_input)
+            self.color_inputs.append(color_input)
+
+            # 色表示用のQFrameを作成
+            color_display = QFrame()
+            color_display.setFixedSize(50, 50)
+            color_display.setStyleSheet("background-color: #FFFFFF;")
+            color_layout.addWidget(color_display)
+            self.color_displays.append(color_display)
+
+        self.layout.addLayout(color_layout)
 
         self.result_label = QLabel("")
         self.layout.addWidget(self.result_label)
@@ -66,17 +80,39 @@ class MainWindow(QMainWindow):
             self.image = QImage(file_name)
             self.color_picker.setImage(self.image)
 
-    def compare_colors(self):
-        main_color_hex = self.hex_label.text().split(": ")[1]
-        results = []
-        main_color_hex = main_color_hex.lower()
-        for input_field in self.color_inputs:
-            compare_color_hex = input_field.text()
-            if compare_color_hex:
-                result = "Match" if main_color_hex.lower(
-                ) == compare_color_hex.lower() else "No Match"
-                results.append(f"{compare_color_hex}: {result}")
+    def update_color_display(self):
+        """入力された色コードに基づいて色表示を更新"""
+        for i, input_field in enumerate(self.color_inputs):
+            color_code = input_field.text().strip()
+            if self.is_valid_hex(color_code):
+                self.color_displays[i].setStyleSheet(
+                    f"background-color: {color_code};")
+            else:
+                self.color_displays[i].setStyleSheet(
+                    "background-color: #FFFFFF;")
 
+    def is_valid_hex(self, hex_code):
+        """入力された色コードが有効なHEXコードか確認"""
+        if len(hex_code) == 7 and hex_code[0] == "#":
+            try:
+                int(hex_code[1:], 16)
+                return True
+            except ValueError:
+                return False
+        return False
+
+    def compare_colors(self):
+        main_color_hex = self.hex_label.text().split(
+            ": ")[1].replace("#", "").lower()
+        results = []
+        for input_field in self.color_inputs:
+            compare_color_hex = input_field.text().replace("#", "").lower()
+            if compare_color_hex:
+                result = "Match" if main_color_hex == compare_color_hex else ""
+                if result:  # 一致した場合のみ表示
+                    results.append(f"{input_field.text()}: {result}")
+
+        # 比較結果を表示
         self.result_label.setText("\n".join(results))
 
 
