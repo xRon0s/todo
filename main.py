@@ -12,16 +12,16 @@ class MainWindow(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 
-        # レイアウトを縦に配置
+      
         self.layout = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
 
-        # 上部にボタンを配置
+        
         self.load_button = QPushButton("Load Image")
         self.load_button.clicked.connect(self.load_image)
         self.layout.addWidget(self.load_button)
 
-        # その他の情報を表示するラベル
+        
         self.color_label = QLabel("Selected Color: ")
         self.layout.addWidget(self.color_label)
 
@@ -31,7 +31,6 @@ class MainWindow(QMainWindow):
         self.hex_label = QLabel("HEX: ")
         self.layout.addWidget(self.hex_label)
 
-        # 画像を表示する領域（ColorPicker）をボタンの1つ下に配置
         self.image_layout = QHBoxLayout()
         self.color_picker = ColorPicker(
             self, self.color_label, self.rgb_label, self.hex_label)
@@ -40,38 +39,36 @@ class MainWindow(QMainWindow):
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.layout.addLayout(self.image_layout)
 
-        # 色入力欄と比較ボタンを配置
         self.input_color_label = QLabel("Entered Colors:")
         self.layout.addWidget(self.input_color_label)
 
-        # 色入力欄（4つ）
+    
         self.color_inputs = []
         for i in range(4):
             color_input = QLineEdit()
             color_input.setPlaceholderText("Enter color code (HEX)")
-            color_input.textChanged.connect(self.update_color_display)  # 変更を検知
+            color_input.textChanged.connect(self.update_color_display)
             self.layout.addWidget(color_input)
             self.color_inputs.append(color_input)
 
-        # 比較ボタンを配置
         self.compare_button = QPushButton("Compare Colors")
         self.compare_button.clicked.connect(self.compare_colors)
         self.layout.addWidget(self.compare_button)
 
-        # 色表示領域を比較ボタンの下に配置
+      
         self.color_displays = []
-        self.color_display_layout = QHBoxLayout()  # 横並びに配置するためのレイアウト
-        self.color_display_layout.setSpacing(5)  # サンプル間の隙間を減らす
+        self.color_display_layout = QHBoxLayout()  
+        self.color_display_layout.setSpacing(5)  
 
         for i in range(4):
-            # 色表示用のQFrameを作成
+            
             color_display = QFrame()
-            color_display.setFixedSize(160, 160)  # 色サンプルのサイズを大きくする
+            color_display.setFixedSize(160, 160) 
             color_display.setStyleSheet("background-color: #FFFFFF;")
             self.color_display_layout.addWidget(color_display)
             self.color_displays.append(color_display)
 
-        # 色サンプルを比較ボタンの下に配置
+       
         self.layout.addLayout(self.color_display_layout)
 
         self.result_label = QLabel("")
@@ -114,10 +111,10 @@ class MainWindow(QMainWindow):
             compare_color_hex = input_field.text().replace("#", "").lower()
             if compare_color_hex:
                 result = "Match" if main_color_hex == compare_color_hex else ""
-                if result:  # 一致した場合のみ表示
+                if result:  
                     results.append(f"{input_field.text()}: {result}")
 
-        # 比較結果を表示
+        
         self.result_label.setText("\n".join(results))
 
 
