@@ -1,8 +1,9 @@
+# main.py
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, QFileDialog, QHBoxLayout, QSpacerItem, QSizePolicy
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Qt
-from color_picker import ColorPicker
+from color_picker import ColorPicker  # MainWindowをインポートする前にColorPickerをインポート
 
 
 class MainWindow(QMainWindow):
@@ -26,8 +27,8 @@ class MainWindow(QMainWindow):
         self.image_layout = QHBoxLayout()
         self.layout.addLayout(self.image_layout)
 
-        # 画像を中央に配置
-        self.color_picker = ColorPicker(self)
+        # ColorPickerをMainWindowに追加
+        self.color_picker = ColorPicker(self)  # ここで親としてMainWindowを渡す
         self.image_layout.addWidget(self.color_picker)
         self.image_layout.addItem(QSpacerItem(
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
