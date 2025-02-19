@@ -40,34 +40,39 @@ class MainWindow(QMainWindow):
             40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         self.layout.addLayout(self.image_layout)
 
-        # 比較ボタンを配置
-        self.compare_button = QPushButton("Compare Colors")
-        self.compare_button.clicked.connect(self.compare_colors)
-        self.layout.addWidget(self.compare_button)
-
-        # 色入力欄と色表示領域を比較ボタンの下にまとめて配置
+        # 色入力欄と比較ボタンを配置
         self.input_color_label = QLabel("Entered Colors:")
         self.layout.addWidget(self.input_color_label)
 
         # 色入力欄（4つ）
         self.color_inputs = []
-        self.color_displays = []
-        color_layout = QHBoxLayout()  # 横並びに配置するためのレイアウト
         for i in range(4):
             color_input = QLineEdit()
             color_input.setPlaceholderText("Enter color code (HEX)")
             color_input.textChanged.connect(self.update_color_display)  # 変更を検知
-            color_layout.addWidget(color_input)
+            self.layout.addWidget(color_input)
             self.color_inputs.append(color_input)
 
+        # 比較ボタンを配置
+        self.compare_button = QPushButton("Compare Colors")
+        self.compare_button.clicked.connect(self.compare_colors)
+        self.layout.addWidget(self.compare_button)
+
+        # 色表示領域を比較ボタンの下に配置
+        self.color_displays = []
+        self.color_display_layout = QHBoxLayout()  # 横並びに配置するためのレイアウト
+        self.color_display_layout.setSpacing(5)  # サンプル間の隙間を減らす
+
+        for i in range(4):
             # 色表示用のQFrameを作成
             color_display = QFrame()
-            color_display.setFixedSize(50, 50)
+            color_display.setFixedSize(160, 160)  # 色サンプルのサイズを大きくする
             color_display.setStyleSheet("background-color: #FFFFFF;")
-            color_layout.addWidget(color_display)
+            self.color_display_layout.addWidget(color_display)
             self.color_displays.append(color_display)
 
-        self.layout.addLayout(color_layout)
+        # 色サンプルを比較ボタンの下に配置
+        self.layout.addLayout(self.color_display_layout)
 
         self.result_label = QLabel("")
         self.layout.addWidget(self.result_label)
