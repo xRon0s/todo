@@ -75,10 +75,7 @@ class ColorPicker(QLabel):
                     parent.rgb_label.setText(
                         f"RGB: ({pixel_color.red()}, {pixel_color.green()}, {pixel_color.blue()})")
                     parent.hex_label.setText(f"HEX: {hex_color}")
-                    parent.color_label.repaint()
-                    parent.rgb_label.repaint()
-                    parent.hex_label.repaint()
-                    
+
 
                     # カーソルをクロスに変更
                     self.setCursor(Qt.CrossCursor)
