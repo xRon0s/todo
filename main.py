@@ -1,6 +1,5 @@
-#main.py
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, QFileDialog, QComboBox, QColorDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QLineEdit, QFileDialog, QHBoxLayout, QSpacerItem, QSizePolicy
 from PySide6.QtGui import QImage, QPixmap
 from PySide6.QtCore import Qt
 from color_picker import ColorPicker
@@ -14,16 +13,26 @@ class MainWindow(QMainWindow):
         self.central_widget = QWidget()
         self.setCentralWidget(self.central_widget)
 
+        # レイアウトを縦に配置
         self.layout = QVBoxLayout()
         self.central_widget.setLayout(self.layout)
 
+        # 上部にボタンを配置
         self.load_button = QPushButton("Load Image")
         self.load_button.clicked.connect(self.load_image)
         self.layout.addWidget(self.load_button)
 
-        self.image_label = QLabel()
-        self.layout.addWidget(self.image_label)
+        # 画像を表示するラベルのためのレイアウト
+        self.image_layout = QHBoxLayout()
+        self.layout.addLayout(self.image_layout)
 
+        # 画像を中央に配置
+        self.color_picker = ColorPicker(self)
+        self.image_layout.addWidget(self.color_picker)
+        self.image_layout.addItem(QSpacerItem(
+            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+
+        # その他の情報を表示するラベル
         self.color_label = QLabel("Selected Color: ")
         self.layout.addWidget(self.color_label)
 
@@ -50,8 +59,6 @@ class MainWindow(QMainWindow):
         self.result_label = QLabel("")
         self.layout.addWidget(self.result_label)
 
-        self.color_picker = ColorPicker(self)
-
     def load_image(self):
         options = QFileDialog.Options()
         file_name, _ = QFileDialog.getOpenFileName(
@@ -59,15 +66,6 @@ class MainWindow(QMainWindow):
         if file_name:
             self.image = QImage(file_name)
             self.color_picker.setImage(self.image)
-
-    def select_color(self):
-        color = QColorDialog.getColor()
-        if color.isValid():
-            rgb = color.getRgb()[:3]
-            hex_color = '#{:02x}{:02x}{:02x}'.format(*rgb)
-            self.color_label.setText(f"Selected Color: {hex_color}")
-            self.rgb_label.setText(f"RGB: {rgb}")
-            self.hex_label.setText(f"HEX: {hex_color}")
 
     def compare_colors(self):
         main_color_hex = self.hex_label.text().split(": ")[1]
